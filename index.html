@@ -1,0 +1,1504 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Visio.ai — Ubah Foto Produk Jadi Visual Premium</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+  
+  <!-- FontAwesome for Premium Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  
+  <!-- Tailwind CSS (for layout utilities) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brandBg: '#08080a',
+            brandSurface: '#111114',
+            brandSurface2: '#18181c',
+            brandAccent: '#e8c97a',
+            brandAccentDark: '#c46b3a',
+            brandText: '#f0ede8',
+            brandMuted: '#7a7876'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root {
+      --bg: #08080a;
+      --surface: #111114;
+      --surface2: #18181c;
+      --border: rgba(255,255,255,0.07);
+      --text: #f0ede8;
+      --muted: #7a7876;
+      --accent: #e8c97a;
+      --accent2: #c46b3a;
+      --glow: rgba(232, 201, 122, 0.15);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* Grain Overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.35;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+    /* Interactive Comparison Slider Styles */
+    .slider-wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      position: relative;
+      cursor: ew-resize;
+      user-select: none;
+    }
+    .slider-container {
+      position: relative;
+      width: 100%;
+      height: 480px;
+    }
+    .slider-before, .slider-after {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .slider-before {
+      background: linear-gradient(135deg, #1e1e24 0%, #0d0d10 100%);
+    }
+    .slider-after {
+      background: linear-gradient(135deg, #1c1508 0%, #3a280e 50%, #150f05 100%);
+      clip-path: inset(0 0 0 50%); /* Dynamic slider clipping path */
+    }
+    .slider-line {
+      position: absolute;
+      top: 0; bottom: 0;
+      left: 50%;
+      width: 2px;
+      background: var(--accent);
+      z-index: 5;
+      transform: translateX(-50%);
+    }
+    .slider-handle {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 44px; height: 44px;
+      background: var(--accent);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 6;
+      color: #0a0a0a;
+      font-size: 1rem;
+      font-weight: bold;
+      box-shadow: 0 0 30px rgba(232,201,122,0.5);
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 16px 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(20px);
+      background: rgba(8,8,10,0.8);
+    }
+    .logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.6rem;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .logo span { color: var(--accent); }
+
+    /* Interactive Grid & Glows */
+    .hero {
+      min-height: 95vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 140px 5% 60px;
+      position: relative;
+    }
+    .hero-glow {
+      position: absolute;
+      width: 800px; height: 800px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(232,201,122,0.08) 0%, transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    
+    /* Animation classes */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Toast Notification system */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .toast {
+      background: rgba(24, 24, 28, 0.95);
+      border: 1px solid rgba(232, 201, 122, 0.3);
+      padding: 16px 24px;
+      border-radius: 12px;
+      color: var(--text);
+      font-size: 0.9rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      transform: translateX(120%);
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .toast.show { transform: translateX(0); }
+
+    /* Workspace Interactive Canvas */
+    .editor-canvas-container {
+      position: relative;
+      width: 100%;
+      max-width: 500px;
+      aspect-ratio: 1;
+      background: #111;
+      border: 2px dashed rgba(255,255,255,0.1);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+    }
+    .editor-bg-preview {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      transition: background 0.5s ease, filter 0.3s ease;
+    }
+    .draggable-product-container {
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      cursor: move;
+      touch-action: none;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .draggable-product-image {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      pointer-events: none;
+      filter: drop-shadow(0 15px 15px rgba(0,0,0,0.6));
+      transition: filter 0.3s ease, transform 0.1s ease;
+    }
+    
+    /* Template Preview Background definitions */
+    .bg-luxury-marble {
+      background: radial-gradient(circle at 50% 50%, rgba(20,20,25,0.6) 0%, rgba(10,10,12,0.9) 100%), 
+                  linear-gradient(135deg, #111 0%, #222 100%);
+      background-image: radial-gradient(ellipse at center, rgba(232,201,122,0.1) 0%, transparent 80%),
+                        url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=800');
+    }
+    .bg-tropical-oasis {
+      background-image: radial-gradient(ellipse at bottom, rgba(255,255,255,0.05) 0%, transparent 70%),
+                        url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=800');
+    }
+    .bg-studio-light {
+      background-image: url('https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&q=80&w=800');
+    }
+    .bg-cyber-neon {
+      background-image: radial-gradient(circle at top right, rgba(244,63,94,0.15) 0%, transparent 60%),
+                        radial-gradient(circle at bottom left, rgba(59,130,246,0.15) 0%, transparent 60%),
+                        url('https://images.unsplash.com/photo-1508739773434-c26b3d09e071?auto=format&fit=crop&q=80&w=800');
+    }
+    .bg-misty-forest {
+      background-image: url('https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&q=80&w=800');
+    }
+    .bg-cozy-wood {
+      background-image: url('https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&q=80&w=800');
+    }
+
+    /* Holographic scanning animation */
+    .scan-line {
+      position: absolute;
+      top: -100%; left: 0;
+      width: 100%; height: 20px;
+      background: linear-gradient(to bottom, transparent, var(--accent), transparent);
+      opacity: 0.8;
+      pointer-events: none;
+      display: none;
+    }
+    @keyframes scan {
+      0% { top: -10%; }
+      100% { top: 110%; }
+    }
+    .scanning .scan-line {
+      display: block;
+      animation: scan 2s linear infinite;
+    }
+  </style>
+</head>
+<body class="bg-brandBg text-brandText antialiased">
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- NAVIGATION -->
+  <nav class="reveal visible">
+    <a href="#" class="logo">Visio<span>.</span>ai</a>
+    <ul class="nav-links">
+      <li><a href="#demo" class="hover:text-brandAccent transition">Demo</a></li>
+      <li><a href="#how" class="hover:text-brandAccent transition">Cara Kerja</a></li>
+      <li><a href="#studio" class="hover:text-brandAccent transition font-semibold text-brandAccent">AI Studio</a></li>
+      <li><a href="#pricing" class="hover:text-brandAccent transition">Harga</a></li>
+    </ul>
+    <a href="#studio" class="nav-cta text-center shadow-lg shadow-yellow-500/10">Buka Studio</a>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <section class="hero" id="home">
+    <div class="hero-glow"></div>
+    <div class="badge">
+      <span class="badge-dot"></span>
+      AI-Powered · Tanpa Prompt · Hasil Instan Premium
+    </div>
+
+    <h1 class="text-center font-bold">Foto Produk Biasa<br/>Jadi Visual <em>Premium</em></h1>
+
+    <p class="hero-sub text-center px-4">
+      Upload foto produkmu — makanan, fashion, kecantikan, atau produk premium —
+      dan biarkan teknologi model AI kami mengubahnya menjadi visual studio profesional bernilai tinggi dalam hitungan detik.
+    </p>
+
+    <div class="hero-actions flex gap-4 flex-wrap justify-center">
+      <a href="#studio" class="btn-primary flex items-center gap-2">
+        <i class="fa-solid fa-wand-magic-sparkles"></i> Mulai AI Studio
+      </a>
+      <a href="#demo" class="btn-secondary flex items-center gap-2">
+        Lihat Contoh Hasil <i class="fa-solid fa-arrow-down"></i>
+      </a>
+    </div>
+  </section>
+
+  <!-- DEMO GALLERY -->
+  <section class="demo" id="demo">
+    <p class="section-label reveal">Hasil Transformasi Nyata dari Visio.ai</p>
+    <div class="cards-grid px-4">
+      <div class="card reveal" style="transition-delay:0s">
+        <div class="card-visual food flex items-center justify-center text-7xl bg-gradient-to-tr from-orange-900 to-amber-950">
+          <div class="product-blob filter drop-shadow-[0_15px_15px_rgba(0,0,0,0.6)]">🍜</div>
+        </div>
+        <div class="card-info">
+          <div class="card-category">Makanan & Minuman</div>
+          <div class="card-title">Visual F&B yang menggugah selera</div>
+        </div>
+      </div>
+      <div class="card reveal" style="transition-delay:0.1s">
+        <div class="card-visual fashion flex items-center justify-center text-7xl bg-gradient-to-tr from-purple-950 to-indigo-950">
+          <div class="product-blob filter drop-shadow-[0_15px_15px_rgba(0,0,0,0.6)]">👗</div>
+        </div>
+        <div class="card-info">
+          <div class="card-category">Fashion</div>
+          <div class="card-title">Tampil editorial layaknya brand ternama</div>
+        </div>
+      </div>
+      <div class="card reveal" style="transition-delay:0.2s">
+        <div class="card-visual beauty flex items-center justify-center text-7xl bg-gradient-to-tr from-pink-950 to-rose-950">
+          <div class="product-blob filter drop-shadow-[0_15px_15px_rgba(0,0,0,0.6)]">💄</div>
+        </div>
+        <div class="card-info">
+          <div class="card-category">Kecantikan</div>
+          <div class="card-title">Visual luxe untuk produk kosmetik</div>
+        </div>
+      </div>
+      <div class="card reveal" style="transition-delay:0.3s">
+        <div class="card-visual tech flex items-center justify-center text-7xl bg-gradient-to-tr from-sky-950 to-slate-950">
+          <div class="product-blob filter drop-shadow-[0_15px_15px_rgba(0,0,0,0.6)]">📱</div>
+        </div>
+        <div class="card-info">
+          <div class="card-category">Elektronik & Gadget</div>
+          <div class="card-title">Showcase produk teknologi secara presisi</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BEFORE/AFTER SLIDER (INTERACTIVE) -->
+  <section class="compare-section" id="compare">
+    <div class="compare-header reveal">
+      <h2 class="text-center font-serif text-4xl">Lihat Bedanya<br/><em class="text-brandAccent">Sebelum & Sesudah</em></h2>
+      <p class="text-center text-brandMuted mt-2">Seret slider di bawah untuk melihat transformasi yang dilakukan AI secara real-time.</p>
+    </div>
+
+    <!-- Active interactive comparison element -->
+    <div class="slider-wrap reveal" id="sliderWrap">
+      <div class="slider-container" id="sliderContainer">
+        <!-- Before slide (low contrast original background) -->
+        <div class="slider-before">
+          <div class="text-center p-6">
+            <div class="text-8xl mb-4 opacity-50 filter grayscale">🧴</div>
+            <div class="text-xs uppercase tracking-wider text-brandMuted">Foto Asli (Original)</div>
+          </div>
+        </div>
+        <!-- After slide (premium background, glowing luxury highlights) -->
+        <div class="slider-after" id="sliderAfter">
+          <div class="text-center p-6 bg-gradient-to-b from-[#111114]/50 to-transparent">
+            <div class="text-8xl mb-4 filter drop-shadow-[0_0_25px_rgba(232,201,122,0.6)] animate-pulse">🧴</div>
+            <div class="text-xs uppercase tracking-wider text-brandAccent font-medium">Hasil Rendition AI</div>
+          </div>
+        </div>
+        <!-- Split line controller -->
+        <div class="slider-line" id="sliderLine"></div>
+        <div class="slider-handle" id="sliderHandle">
+          <i class="fa-solid fa-arrows-left-right text-brandBg text-sm"></i>
+        </div>
+        <!-- Left/Right tags -->
+        <div class="slider-tag tag-before">Sebelum</div>
+        <div class="slider-tag tag-after">Sesudah</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE AI STUDIO WORKSPACE (Lakku.ai Core) -->
+  <section class="py-24 bg-brandSurface border-y border-[var(--border)] relative" id="studio">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(232,201,122,0.03),transparent_40%)] pointer-events: none;"></div>
+    
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="text-center mb-12">
+        <span class="px-3 py-1 text-xs uppercase tracking-widest border border-brandAccent/30 text-brandAccent rounded-full bg-brandAccent/5">Live Workspace</span>
+        <h2 class="text-4xl font-serif mt-4 mb-2">Visio AI Studio</h2>
+        <p class="text-brandMuted max-w-xl mx-auto text-sm">Uji coba instan: Upload foto, atur komposisi, ganti latar belakang premium, dan simulasikan generate dengan sekali klik.</p>
+      </div>
+
+      <!-- Studio Layout Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- Column 1: Workspace Controls (Left/4 Columns) -->
+        <div class="lg:col-span-4 space-y-6 bg-brandSurface2 p-6 rounded-3xl border border-[var(--border)]">
+          
+          <!-- Step 1: Select/Upload Product Image -->
+          <div>
+            <label class="block text-xs font-semibold uppercase text-brandAccent tracking-wider mb-3">Langkah 1: Pilih / Upload Produk</label>
+            
+            <!-- Upload Box -->
+            <div class="border border-dashed border-brandAccent/30 hover:border-brandAccent transition rounded-xl p-4 text-center cursor-pointer relative bg-brandBg/50" id="uploadArea">
+              <input type="file" id="productFileInput" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer" />
+              <i class="fa-solid fa-cloud-arrow-up text-brandAccent text-2xl mb-2"></i>
+              <p class="text-xs text-brandText font-medium">Klik untuk upload foto Anda</p>
+              <p class="text-[10px] text-brandMuted mt-1">Saran: Background transparan/solid</p>
+            </div>
+
+            <!-- Preloaded Quick Sample Products -->
+            <div class="mt-4">
+              <span class="text-xs text-brandMuted block mb-2">Atau gunakan sampel cepat:</span>
+              <div class="grid grid-cols-4 gap-2">
+                <button onclick="setSampleProduct('🔥', 'Botol Serum')" class="bg-brandBg hover:border-brandAccent border border-[var(--border)] rounded-lg p-2 text-2xl transition flex flex-col items-center justify-center">
+                  <span>🧪</span>
+                  <span class="text-[8px] text-brandMuted mt-1">Serum</span>
+                </button>
+                <button onclick="setSampleProduct('🎒', 'Tas Ransel')" class="bg-brandBg hover:border-brandAccent border border-[var(--border)] rounded-lg p-2 text-2xl transition flex flex-col items-center justify-center">
+                  <span>👜</span>
+                  <span class="text-[8px] text-brandMuted mt-1">Bag</span>
+                </button>
+                <button onclick="setSampleProduct('👟', 'Sepatu Sneakers')" class="bg-brandBg hover:border-brandAccent border border-[var(--border)] rounded-lg p-2 text-2xl transition flex flex-col items-center justify-center">
+                  <span>👟</span>
+                  <span class="text-[8px] text-brandMuted mt-1">Sneaker</span>
+                </button>
+                <button onclick="setSampleProduct('☕', 'Mug Kopi Premium')" class="bg-brandBg hover:border-brandAccent border border-[var(--border)] rounded-lg p-2 text-2xl transition flex flex-col items-center justify-center">
+                  <span>☕</span>
+                  <span class="text-[8px] text-brandMuted mt-1">Cup</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2: Select AI Background Scene Scene Template -->
+          <div class="border-t border-[var(--border)] pt-4">
+            <div class="flex justify-between items-center mb-3">
+              <label class="block text-xs font-semibold uppercase text-brandAccent tracking-wider">Langkah 2: Latar Belakang</label>
+              <!-- Selector Tabs -->
+              <div class="flex bg-brandBg p-0.5 rounded-lg border border-white/5">
+                <button type="button" onclick="setStudioMode('preset')" id="tab-preset" class="px-2 py-1 text-[10px] rounded-md bg-brandSurface2 text-brandAccent font-medium transition">Presets</button>
+                <button type="button" onclick="setStudioMode('custom')" id="tab-custom" class="px-2.5 py-1 text-[10px] rounded-md text-brandMuted hover:text-brandText transition flex items-center gap-1">Custom Prompt <i class="fa-solid fa-sparkles text-[8px]"></i></button>
+              </div>
+            </div>
+
+            <!-- Presets Grid -->
+            <div class="grid grid-cols-2 gap-2" id="bgTemplateList">
+              <button onclick="changeWorkspaceBg('bg-luxury-marble', 'Eksklusif Marmer')" class="p-2 border border-brandAccent text-left rounded-lg bg-brandBg transition text-xs flex items-center gap-2" id="btn-bg-luxury-marble">
+                <span class="w-4 h-4 rounded-full bg-gradient-to-tr from-amber-600 to-yellow-300"></span>
+                <span>Eksklusif Marmer</span>
+              </button>
+              <button onclick="changeWorkspaceBg('bg-tropical-oasis', 'Tropical Oasis')" class="p-2 border border-[var(--border)] text-left rounded-lg bg-brandBg hover:border-brandAccent transition text-xs flex items-center gap-2" id="btn-bg-tropical-oasis">
+                <span class="w-4 h-4 rounded-full bg-gradient-to-tr from-emerald-600 to-sky-300"></span>
+                <span>Oasis Tropis</span>
+              </button>
+              <button onclick="changeWorkspaceBg('bg-studio-light', 'Professional Studio')" class="p-2 border border-[var(--border)] text-left rounded-lg bg-brandBg hover:border-brandAccent transition text-xs flex items-center gap-2" id="btn-bg-studio-light">
+                <span class="w-4 h-4 rounded-full bg-gradient-to-tr from-indigo-500 to-pink-500"></span>
+                <span>Studio Light</span>
+              </button>
+              <button onclick="changeWorkspaceBg('bg-cyber-neon', 'Futuristic Cyber')" class="p-2 border border-[var(--border)] text-left rounded-lg bg-brandBg hover:border-brandAccent transition text-xs flex items-center gap-2" id="btn-bg-cyber-neon">
+                <span class="w-4 h-4 rounded-full bg-gradient-to-tr from-fuchsia-600 to-blue-500"></span>
+                <span>Neon Cyber</span>
+              </button>
+              <button onclick="changeWorkspaceBg('bg-misty-forest', 'Misty Woodland')" class="p-2 border border-[var(--border)] text-left rounded-lg bg-brandBg hover:border-brandAccent transition text-xs flex items-center gap-2" id="btn-bg-misty-forest">
+                <span class="w-4 h-4 rounded-full bg-gradient-to-tr from-emerald-800 to-teal-500"></span>
+                <span>Misty Forest</span>
+              </button>
+              <button onclick="changeWorkspaceBg('bg-cozy-wood', 'Minimalist Oak')" class="p-2 border border-[var(--border)] text-left rounded-lg bg-brandBg hover:border-brandAccent transition text-xs flex items-center gap-2" id="btn-bg-cozy-wood">
+                <span class="w-4 h-4 rounded-full bg-gradient-to-tr from-amber-900 to-orange-400"></span>
+                <span>Kayu Hangat</span>
+              </button>
+            </div>
+
+            <!-- Custom Prompt Input Container (Hidden by default) -->
+            <div id="customPromptContainer" class="hidden space-y-3 mt-3">
+              <textarea id="customPromptInput" rows="3" class="w-full bg-brandBg border border-[var(--border)] focus:border-brandAccent focus:outline-none rounded-xl p-3 text-xs text-brandText placeholder-brandMuted resize-none" placeholder="Contoh: panggung marmer putih bulat premium, kelopak bunga mawar pastel berguguran, pencahayaan matahari pagi menyamping, bokeh lembut, studio profesional..."></textarea>
+              <div class="flex gap-2">
+                <button type="button" onclick="optimizePromptWithAI()" id="btnOptimizePrompt" class="flex-1 bg-brandBg hover:bg-brandBg/80 border border-brandAccent/30 hover:border-brandAccent text-brandAccent text-[10px] font-medium py-2 px-3 rounded-lg transition flex items-center justify-center gap-1.5">
+                  <i class="fa-solid fa-wand-magic-sparkles"></i> Sempurnakan Prompt (AI)
+                </button>
+                <button type="button" onclick="insertRandomSuggestion()" class="bg-brandBg hover:bg-brandBg/80 border border-white/5 text-brandText text-[10px] py-2 px-3 rounded-lg transition">
+                  <i class="fa-solid fa-dice"></i> Acak
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3: Transform Slider Controls (Scale, Rotate, Shadows) -->
+          <div class="border-t border-[var(--border)] pt-4 space-y-4">
+            <label class="block text-xs font-semibold uppercase text-brandAccent tracking-wider">Langkah 3: Atur Posisi & Ukuran</label>
+            
+            <div>
+              <div class="flex justify-between text-xs text-brandMuted mb-1">
+                <span>Ukuran Produk</span>
+                <span id="scaleVal">100%</span>
+              </div>
+              <input type="range" min="30" max="250" value="100" class="w-full accent-[var(--accent)] bg-brandBg" id="scaleSlider" oninput="updateProductTransform()" />
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs text-brandMuted mb-1">
+                <span>Rotasi Produk</span>
+                <span id="rotateVal">0°</span>
+              </div>
+              <input type="range" min="-180" max="180" value="0" class="w-full accent-[var(--accent)] bg-brandBg" id="rotateSlider" oninput="updateProductTransform()" />
+            </div>
+
+            <div class="text-[10px] text-brandMuted flex items-center gap-1">
+              <i class="fa-solid fa-circle-info"></i>
+              <span>Anda juga dapat menggeser produk langsung di atas layar pratinjau.</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Column 2: Live Canvas Preview & Rendering Engine (Middle/5 Columns) -->
+        <div class="lg:col-span-5 flex flex-col items-center">
+          
+          <div class="editor-canvas-container" id="editorContainer">
+            <!-- Simulated ambient gradient shadows based on selected scene -->
+            <div class="editor-bg-preview bg-luxury-marble" id="workspaceBg"></div>
+            
+            <!-- Floating Workspace Metadata -->
+            <div class="absolute top-4 left-4 bg-black/60 backdrop-blur-md border border-white/10 px-3 py-1 rounded-full text-[10px] tracking-wider text-brandAccent flex items-center gap-2 z-10">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+              <span>Workspace Active</span>
+            </div>
+
+            <!-- Dynamic Product Container (Draggable) -->
+            <div class="draggable-product-container" id="draggableProduct">
+              <div id="productVisualContent" class="text-8xl select-none transition-transform pointer-events-none drop-shadow-[0_20px_20px_rgba(0,0,0,0.8)] filter">
+                🧪
+              </div>
+              <!-- Loaded Image element fallback (Initially hidden) -->
+              <img id="productUploadedImage" src="" class="hidden w-full h-full object-contain pointer-events-none" alt="Custom Product" />
+            </div>
+
+            <!-- AI Hologram scanning bar effect -->
+            <div class="scan-line" id="scanLine"></div>
+
+            <!-- Finished state overlay (gorgeous spotlight glow overlay once generated) -->
+            <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-white/10 pointer-events-none transition-opacity duration-700 opacity-0" id="canvasCompletedOverlay"></div>
+          </div>
+
+          <!-- Generation trigger actions -->
+          <div class="w-full max-w-[500px] mt-6 flex flex-col gap-3">
+            <button onclick="startAiGenerationSimulation()" class="w-full bg-brandAccent hover:bg-brandAccent/90 text-brandBg font-semibold py-4 rounded-xl shadow-lg shadow-yellow-500/20 hover:shadow-yellow-500/35 transition flex items-center justify-center gap-2 text-sm" id="btnGenerate">
+              <i class="fa-solid fa-bolt"></i> Generate Premium Background
+            </button>
+            
+            <div class="grid grid-cols-2 gap-2">
+              <button onclick="resetWorkspace()" class="bg-brandSurface2 border border-[var(--border)] hover:bg-brandSurface/80 text-brandText py-3 px-4 rounded-xl text-xs transition flex items-center justify-center gap-2">
+                <i class="fa-solid fa-rotate-left"></i> Reset Studio
+              </button>
+              <button onclick="downloadAsImage()" class="bg-brandSurface2 border border-brandAccent/20 hover:border-brandAccent text-brandAccent py-3 px-4 rounded-xl text-xs transition flex items-center justify-center gap-2" id="btnDownload" disabled>
+                <i class="fa-solid fa-download"></i> Download Hasil (Ultra HD)
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Column 3: AI Generation Status & Prompt Logs (Right/3 Columns) -->
+        <div class="lg:col-span-3 space-y-4">
+          <div class="bg-brandSurface2 p-5 rounded-2xl border border-[var(--border)]">
+            <h3 class="text-xs font-semibold uppercase text-brandAccent tracking-wider mb-3">AI Engine Logs</h3>
+            <div class="bg-brandBg p-3 rounded-lg border border-white/5 font-mono text-[10px] text-emerald-400 space-y-2 h-[180px] overflow-y-auto" id="logConsole">
+              <div class="text-brandMuted">[SYSTEM] Visio.ai engine initialized. Ready to render.</div>
+              <div class="text-brandMuted">[STATUS] Pilih template atau silakan unggah file.</div>
+            </div>
+          </div>
+
+          <!-- Dynamic Parameter Stats -->
+          <div class="bg-brandSurface2 p-5 rounded-2xl border border-[var(--border)] space-y-3">
+            <h3 class="text-xs font-semibold uppercase text-brandText tracking-wider">Detail Metadata AI</h3>
+            <div class="flex justify-between text-xs text-brandMuted">
+              <span>Resolusi Input:</span>
+              <span class="text-brandText" id="metaInputRes">600 x 600 px (Emoji)</span>
+            </div>
+            <div class="flex justify-between text-xs text-brandMuted">
+              <span>Rasio Aspek:</span>
+              <span class="text-brandText">1:1 Square</span>
+            </div>
+            <div class="flex justify-between text-xs text-brandMuted">
+              <span>Tema Terpilih:</span>
+              <span class="text-brandAccent font-medium" id="metaThemeName">Eksklusif Marmer</span>
+            </div>
+            <div class="flex justify-between text-xs text-brandMuted">
+              <span>Pencahayaan:</span>
+              <span class="text-brandText" id="metaLighting">Global Ambient Warm</span>
+            </div>
+          </div>
+
+          <!-- AI Copywriter Panel (Gemini Powered) -->
+          <div class="bg-brandSurface2 p-5 rounded-2xl border border-brandAccent/20 space-y-3 relative overflow-hidden">
+            <div class="absolute -top-10 -right-10 w-24 h-24 bg-brandAccent/5 rounded-full blur-xl pointer-events-none"></div>
+            <div class="flex items-center justify-between">
+              <h3 class="text-xs font-semibold uppercase text-brandAccent tracking-wider flex items-center gap-1.5">
+                <i class="fa-solid fa-feather-pointed"></i> Copywriter Iklan AI
+              </h3>
+              <span class="text-[9px] bg-brandAccent/10 text-brandAccent px-1.5 py-0.5 rounded font-mono">Gemini 3.1</span>
+            </div>
+            <p class="text-[10px] text-brandMuted leading-relaxed">Buat salinan promosi Instagram, TikTok, atau katalog otomatis yang disesuaikan dengan foto produk & tema latar studio Anda.</p>
+            
+            <div class="space-y-2">
+              <label class="block text-[9px] uppercase text-brandMuted tracking-wider">Gaya Tulisan:</label>
+              <select id="copywritingTone" class="w-full bg-brandBg border border-white/10 rounded-lg p-2 text-xs text-brandText focus:outline-none focus:border-brandAccent">
+                <option value="Luxury & Elegan">Luxury & Elegan</option>
+                <option value="Hypebeast & Trendy">Hypebeast & Trendy</option>
+                <option value="Minimalis & Estetis">Minimalis & Estetis</option>
+                <option value="Persuasif Hard Sell">Persuasif Hard Sell (Promosional)</option>
+                <option value="Lucu & Santai">Lucu & Santai</option>
+              </select>
+            </div>
+
+            <button onclick="generateCopywritingWithGemini()" id="btnGenerateCopy" class="w-full bg-brandBg hover:bg-brandBg/80 border border-brandAccent/30 hover:border-brandAccent text-brandAccent font-medium py-2.5 rounded-xl text-xs transition flex items-center justify-center gap-1.5">
+              <i class="fa-solid fa-wand-magic-sparkles animate-pulse"></i> Buat Copywriting Premium
+            </button>
+
+            <!-- Results Area -->
+            <div id="copywritingResultContainer" class="hidden space-y-2 pt-2">
+              <div class="relative bg-brandBg p-3 rounded-xl border border-white/5">
+                <textarea id="copywritingResultText" readonly class="w-full bg-transparent text-[11px] text-brandText leading-relaxed focus:outline-none resize-none h-36" placeholder="Hasil copywriting akan muncul di sini..."></textarea>
+                <button onclick="copyToClipboard('copywritingResultText')" class="absolute bottom-2 right-2 bg-brandSurface2 hover:bg-brandSurface text-brandText hover:text-brandAccent px-2.5 py-1.5 rounded-md text-[10px] border border-white/5 transition flex items-center gap-1" title="Salin ke Clipboard">
+                  <i class="fa-solid fa-copy"></i> Salin
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- API Key Config Drawer (Collapsible) -->
+          <div class="bg-brandSurface2 p-4 rounded-2xl border border-white/5">
+            <button onclick="toggleApiSettings()" class="w-full flex items-center justify-between text-xs text-brandMuted hover:text-brandText transition">
+              <span class="flex items-center gap-1.5"><i class="fa-solid fa-gears"></i> Pengaturan Kunci API</span>
+              <i class="fa-solid fa-chevron-down text-[10px]" id="apiGearIcon"></i>
+            </button>
+            <div id="apiSettingsDrawer" class="hidden pt-3 space-y-2">
+              <p class="text-[9px] text-brandMuted leading-relaxed">Secara bawaan, aplikasi menggunakan integrasi sandbox Canvas. Masukkan API Key Gemini Anda jika ingin kuota tak terbatas.</p>
+              <input type="password" id="customApiKeyInput" class="w-full bg-brandBg border border-white/10 focus:border-brandAccent focus:outline-none rounded-lg p-2 text-[10px] text-brandText placeholder-brandMuted" placeholder="AIzaSy..." />
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how" id="how">
+    <h2 class="reveal text-center font-serif text-4xl mb-12">Proses Sederhana 4 Langkah</h2>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-num">01</div>
+        <div class="step-icon">📸</div>
+        <h3>Upload Foto Produk</h3>
+        <p>Unggah foto produk terbaik Anda dari handphone maupun komputer. Berbagai format umum didukung secara optimal.</p>
+      </div>
+      <div class="step reveal" style="transition-delay:0.1s">
+        <div class="step-num">02</div>
+        <div class="step-icon">🎯</div>
+        <h3>Pilih Tema/Template</h3>
+        <p>Pilih tipe estetika visual premium yang Anda dambakan tanpa repot menulis prompt AI yang rumit.</p>
+      </div>
+      <div class="step reveal" style="transition-delay:0.2s">
+        <div class="step-num">03</div>
+        <div class="step-icon">✨</div>
+        <h3>AI Magic Renderer</h3>
+        <p>Teknologi generator kami mendeteksi produk, membersihkan latar belakang asli, dan membaurkannya dengan tema pilihan Anda.</p>
+      </div>
+      <div class="step reveal" style="transition-delay:0.3s">
+        <div class="step-num">04</div>
+        <div class="step-icon">🚀</div>
+        <h3>Download Visual Premium</h3>
+        <p>Miliki foto beresolusi super tajam siap saji untuk melipatgandakan omset tokomu di marketplace & Instagram.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATEGORIES -->
+  <section class="categories" id="categories">
+    <h2 class="reveal">Dibuat untuk Semua Jenis Bisnis</h2>
+    <p class="sub reveal">UMKM Mandiri hingga Brand Retail Besar — Dapatkan visual berkualitas studio foto komersial.</p>
+    <div class="cat-grid">
+      <div class="cat-card reveal">
+        <div class="cat-icon">🍔</div>
+        <div class="cat-name">Makanan & Kuliner</div>
+        <div class="cat-desc">Visual kuliner menggugah selera pembeli</div>
+      </div>
+      <div class="cat-card reveal" style="transition-delay:0.1s">
+        <div class="cat-icon">👗</div>
+        <div class="cat-name">Fashion & Pakaian</div>
+        <div class="cat-desc">Tampilan katalog editorial editorial look</div>
+      </div>
+      <div class="cat-card reveal" style="transition-delay:0.2s">
+        <div class="cat-icon">💅</div>
+        <div class="cat-name">Beauty & Skincare</div>
+        <div class="cat-desc">Visualisasi mewah kosmetik berkilau</div>
+      </div>
+      <div class="cat-card reveal" style="transition-delay:0.3s">
+        <div class="cat-icon">📦</div>
+        <div class="cat-name">Produk Retail FMCG</div>
+        <div class="cat-desc">Detail produk tajam yang premium</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="pricing" id="pricing">
+    <h2 class="reveal">Pilihan Paket Harga Terbaik</h2>
+    <div class="plans">
+      <!-- Plan 1 -->
+      <div class="plan reveal">
+        <div class="plan-name">Starter Pack</div>
+        <div class="plan-price">Gratis</div>
+        <div class="plan-period">Selamanya</div>
+        <ul class="plan-features">
+          <li><span class="check"><i class="fa-solid fa-check"></i></span> 10 foto render per bulan</li>
+          <li><span class="check"><i class="fa-solid fa-check"></i></span> Resolusi standar (1080px)</li>
+          <li><span class="check"><i class="fa-solid fa-check"></i></span> Akses 4 template dasar</li>
+          <li><span class="check"><i class="fa-solid fa-check"></i></span> Watermark Visio.ai</li>
+        </ul>
+        <a href="#studio" class="plan-btn outline mt-6">Mulai Gratis</a>
+      </div>
+      <!-- Plan 2 (Featured) -->
+      <div class="plan featured reveal" style="transition-delay:0.1s">
+        <div class="plan-tag">Pilihan Populer</div>
+        <div class="plan-name">Pro Studio</div>
+        <div class="plan-price"><span>Rp</span>199<span>K</span></div>
+        <div class="plan-period">per bulan</div>
+        <ul class="plan-features">
+          <li><span class="check"><i class="fa-solid fa-check"></i></span> 200 foto render per bulan</li>
+          <li><span class="check"><i class="fa-solid fa-check"></i></span> Resolusi tinggi (Ultra HD 4K)</li>
+          <li><span class="check"><i class="fa-solid fa-check"></i></span> Akses ke seluruh tema premium</li>
+          <li><span class="check"><i class="fa-solid fa-check"></i></span> Tanpa Watermark</li>
+          <li><span class="check"><i class="fa-solid fa-check"></i></span> Prioritas antrian rendering</li>
+        </ul>
+        <a href="#studio" class="plan-btn solid mt-6">Langganan Pro</a>
+      </div>
+      <!-- Plan 3 -->
+      <div class="plan reveal" style="transition-delay:0.2s">
+        <div class="plan-name">Enterprise / API</div>
+        <div class="plan-price"><span>Rp</span>599<span>K</span></div>
+        <div class="plan-period">per bulan</div>
+        <ul class="plan-features">
+          <li><span class="check"><i class="fa-solid fa-check"></i></span> Unlimited foto render</li>
+          <li><span class="check"><i class="fa-solid fa-check"></i></span> Resolusi Super (Studio Quality 8K)</li>
+          <li><span class="check"><i class="fa-solid fa-check"></i></span> Integrasi API & Bulk Upload</li>
+          <li><span class="check"><i class="fa-solid fa-check"></i></span> Dukungan Akun Tim (5 User)</li>
+          <li><span class="check"><i class="fa-solid fa-check"></i></span> Prioritas Dukungan 24/7</li>
+        </ul>
+        <a href="mailto:support@visio.ai" class="plan-btn outline mt-6">Hubungi Sales</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <a href="#" class="footer-logo">Visio<span>.</span>ai</a>
+    <ul class="footer-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#studio">Studio</a></li>
+      <li><a href="#pricing">Harga</a></li>
+      <li><a href="https://github.com" target="_blank">Developers</a></li>
+    </ul>
+    <div class="footer-copy">
+      &copy; 2026 Visio.ai. Semua Hak Cipta Dilindungi. Terinspirasi oleh Lakku.ai.
+    </div>
+  </footer>
+
+  <!-- SCRIPTING CORE SYSTEM LOGIC -->
+  <script>
+    // System State Variables
+    let currentScale = 1;
+    let currentRotation = 0;
+    let selectedBackground = 'bg-luxury-marble';
+    let selectedBackgroundName = 'Eksklusif Marmer';
+    let isProductUploaded = false;
+    let isAiGenerated = false;
+
+    // Gemini API State Variables
+    let studioMode = 'preset'; // 'preset' or 'custom'
+    let customGeneratedImageUrl = '';
+    const SUGGESTIONS = [
+      "podium batu basal gelap kasar di tengah riak air kolam, dikelilingi daun palem tropis, pencahayaan matahari sore dramatis, kedalaman ruang sinematik",
+      "panggung marmer putih bulat premium, kelopak bunga mawar pastel berguguran, pencahayaan matahari pagi menyamping, bokeh lembut, studio profesional",
+      "lantai kayu ek minimalis, dengan latar belakang jendela besar berkabut memperlihatkan pepohonan pinus musim gugur, pencahayaan lembut diffuser studio",
+      "panggung logam perak mengkilap di atas meja kaca, dengan latar belakang lampu neon cyberpunk magenta dan biru bergradasi lembut, efek kabut tipis"
+    ];
+
+    // References
+    const sliderContainer = document.getElementById('sliderContainer');
+    const sliderAfter = document.getElementById('sliderAfter');
+    const sliderLine = document.getElementById('sliderLine');
+    const sliderHandle = document.getElementById('sliderHandle');
+    const sliderWrap = document.getElementById('sliderWrap');
+
+    const draggableProduct = document.getElementById('draggableProduct');
+    const editorContainer = document.getElementById('editorContainer');
+    const workspaceBg = document.getElementById('workspaceBg');
+    const scaleSlider = document.getElementById('scaleSlider');
+    const scaleVal = document.getElementById('scaleVal');
+    const rotateSlider = document.getElementById('rotateSlider');
+    const rotateVal = document.getElementById('rotateVal');
+    
+    const productVisualContent = document.getElementById('productVisualContent');
+    const productUploadedImage = document.getElementById('productUploadedImage');
+    const productFileInput = document.getElementById('productFileInput');
+    const uploadArea = document.getElementById('uploadArea');
+    
+    const scanLine = document.getElementById('scanLine');
+    const canvasCompletedOverlay = document.getElementById('canvasCompletedOverlay');
+    const btnGenerate = document.getElementById('btnGenerate');
+    const btnDownload = document.getElementById('btnDownload');
+    const logConsole = document.getElementById('logConsole');
+    
+    // Metadata displays
+    const metaInputRes = document.getElementById('metaInputRes');
+    const metaThemeName = document.getElementById('metaThemeName');
+    const metaLighting = document.getElementById('metaLighting');
+
+    // Switch between Preset Scenes and Custom AI prompt modes
+    function setStudioMode(mode) {
+      studioMode = mode;
+      const tabPreset = document.getElementById('tab-preset');
+      const tabCustom = document.getElementById('tab-custom');
+      const bgTemplateList = document.getElementById('bgTemplateList');
+      const customPromptContainer = document.getElementById('customPromptContainer');
+
+      if (mode === 'preset') {
+        tabPreset.className = 'px-2 py-1 text-[10px] rounded-md bg-brandSurface2 text-brandAccent font-medium transition';
+        tabCustom.className = 'px-2.5 py-1 text-[10px] rounded-md text-brandMuted hover:text-brandText transition';
+        bgTemplateList.classList.remove('hidden');
+        customPromptContainer.classList.add('hidden');
+        metaThemeName.innerText = selectedBackgroundName;
+        writeLog("Beralih ke mode preset latar belakang.", "text-brandMuted");
+      } else {
+        tabPreset.className = 'px-2 py-1 text-[10px] rounded-md text-brandMuted hover:text-brandText transition';
+        tabCustom.className = 'px-2.5 py-1 text-[10px] rounded-md bg-brandSurface2 text-brandAccent font-medium transition';
+        bgTemplateList.classList.add('hidden');
+        customPromptContainer.classList.remove('hidden');
+        metaThemeName.innerText = "Custom Prompt (Imagen Powered)";
+        writeLog("Beralih ke mode kustom prompt. Silakan tulis konsep studio Anda!", "text-brandAccent");
+      }
+      resetAiOutputState();
+    }
+
+    // Insert random suggestion into custom prompt area
+    function insertRandomSuggestion() {
+      const idx = Math.floor(Math.random() * SUGGESTIONS.length);
+      document.getElementById('customPromptInput').value = SUGGESTIONS[idx];
+      showToast("Mengisi saran prompt kreatif!");
+      writeLog(`Menggunakan contoh saran: "${SUGGESTIONS[idx].substring(0, 45)}..."`, "text-brandMuted");
+    }
+
+    // Toggle API Key Setting Section
+    function toggleApiSettings() {
+      const drawer = document.getElementById('apiSettingsDrawer');
+      const icon = document.getElementById('apiGearIcon');
+      drawer.classList.toggle('hidden');
+      icon.classList.toggle('fa-chevron-down');
+      icon.classList.toggle('fa-chevron-up');
+    }
+
+    // Retrieve API Key
+    function getApiKey() {
+      const customKey = document.getElementById('customApiKeyInput').value.trim();
+      return customKey || ""; // Empty strings fall back to Canvas automatic runtime binding
+    }
+
+    // Optimize User Prompt into Beautiful Photographic Terms with Gemini 3.1
+    async function optimizePromptWithAI() {
+      const textarea = document.getElementById('customPromptInput');
+      const userPrompt = textarea.value.trim();
+      if (!userPrompt) {
+        showToast("Tulis prompt dasar terlebih dahulu sebelum optimasi!", "info");
+        return;
+      }
+
+      const btn = document.getElementById('btnOptimizePrompt');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = `<i class="fa-solid fa-circle-notch animate-spin"></i> Menyempurnakan...`;
+      btn.setAttribute('disabled', 'true');
+      writeLog(`Menghubungi Gemini LLM untuk optimasi prompt...`, 'text-brandAccent');
+
+      const apiKey = getApiKey();
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+      const systemPrompt = "You are a professional AI image generation prompt architect. Your task is to take a raw Indonesian product background concept, and expand it into a highly detailed, evocative, English description optimized for Imagen 4. Maintain all core conceptual elements like color, atmosphere, materials, lighting but refine with high-fashion photography terms (e.g., studio lighting, shallow depth of field, sharp focus, octane render). Respond with ONLY the expanded prompt, directly, with no extra text or pleasantries.";
+
+      const payload = {
+        contents: [{ parts: [{ text: `Original concept: "${userPrompt}"` }] }],
+        systemInstruction: { parts: [{ text: systemPrompt }] }
+      };
+
+      try {
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+        const data = await response.json();
+        const optimizedText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (optimizedText) {
+          textarea.value = optimizedText.trim();
+          showToast("Prompt berhasil dioptimasi ke standar studio global!");
+          writeLog(`[GEMINI SUCCESS] Prompt dioptimasi: "${optimizedText.substring(0, 60)}..."`, 'text-emerald-400');
+        } else {
+          throw new Error("Missing content in API response.");
+        }
+      } catch (err) {
+        console.error(err);
+        showToast("Gagal memanggil Gemini. Menggunakan penambahan deskripsi lokal.", "info");
+        textarea.value = userPrompt + ", professional studio lighting, 8k resolution, photorealistic, sharp focus, 3d platform octane render, exquisite depth of field";
+        writeLog(`[FALLBACK] Ditambahkan optimasi lokal standar.`, 'text-brandMuted');
+      } finally {
+        btn.innerHTML = originalText;
+        btn.removeAttribute('disabled');
+      }
+    }
+
+    // Toast Notification helper
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = `toast`;
+      toast.innerHTML = `
+        <i class="fa-solid ${type === 'success' ? 'fa-circle-check text-brandAccent' : 'fa-circle-info text-sky-400'}"></i>
+        <span>${message}</span>
+      `;
+      container.appendChild(toast);
+      setTimeout(() => toast.classList.add('show'), 50);
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    // Write log helper to simulated console
+    function writeLog(text, colorClass = 'text-brandMuted') {
+      const p = document.createElement('div');
+      p.className = colorClass;
+      p.innerText = `[${new Date().toLocaleTimeString()}] ${text}`;
+      logConsole.appendChild(p);
+      logConsole.scrollTop = logConsole.scrollHeight;
+    }
+
+    // INTERACTIVE COMPARISON SLIDER DRAG LOGIC
+    let isSliderDragging = false;
+
+    function moveSlider(clientX) {
+      const rect = sliderContainer.getBoundingClientRect();
+      const x = clientX - rect.left;
+      let percentage = (x / rect.width) * 100;
+      if (percentage < 0) percentage = 0;
+      if (percentage > 100) percentage = 100;
+
+      // Apply styling updates
+      sliderAfter.style.clipPath = `inset(0 0 0 ${percentage}%)`;
+      sliderLine.style.left = `${percentage}%`;
+      sliderHandle.style.left = `${percentage}%`;
+    }
+
+    sliderContainer.addEventListener('mousedown', (e) => {
+      isSliderDragging = true;
+      moveSlider(e.clientX);
+    });
+    window.addEventListener('mouseup', () => isSliderDragging = false);
+    window.addEventListener('mousemove', (e) => {
+      if (!isSliderDragging) return;
+      moveSlider(e.clientX);
+    });
+
+    // Touch events for mobile support
+    sliderContainer.addEventListener('touchstart', (e) => {
+      isSliderDragging = true;
+      moveSlider(e.touches[0].clientX);
+    });
+    window.addEventListener('touchend', () => isSliderDragging = false);
+    window.addEventListener('touchmove', (e) => {
+      if (!isSliderDragging) return;
+      moveSlider(e.touches[0].clientX);
+    });
+
+
+    // PRODUCT DRAGGABLE ENGINE IN WORKSPACE
+    let isProductDragging = false;
+    let productX = 0;
+    let productY = 0;
+    let startX = 0;
+    let startY = 0;
+
+    draggableProduct.addEventListener('mousedown', (e) => {
+      isProductDragging = true;
+      startX = e.clientX - productX;
+      startY = e.clientY - productY;
+      draggableProduct.style.cursor = 'grabbing';
+      e.preventDefault();
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isProductDragging) return;
+      productX = e.clientX - startX;
+      productY = e.clientY - startY;
+      
+      // Prevent dragging outside logical bounds of canvas container
+      const limit = 200;
+      productX = Math.max(-limit, Math.min(limit, productX));
+      productY = Math.max(-limit, Math.min(limit, productY));
+
+      updateProductTransform();
+    });
+
+    window.addEventListener('mouseup', () => {
+      if (isProductDragging) {
+        isProductDragging = false;
+        draggableProduct.style.cursor = 'move';
+      }
+    });
+
+    // Mobile touch controls for product dragging
+    draggableProduct.addEventListener('touchstart', (e) => {
+      isProductDragging = true;
+      startX = e.touches[0].clientX - productX;
+      startY = e.touches[0].clientY - productY;
+      e.preventDefault();
+    }, { passive: false });
+
+    window.addEventListener('touchmove', (e) => {
+      if (!isProductDragging) return;
+      productX = e.touches[0].clientX - startX;
+      productY = e.touches[0].clientY - startY;
+      
+      const limit = 200;
+      productX = Math.max(-limit, Math.min(limit, productX));
+      productY = Math.max(-limit, Math.min(limit, productY));
+
+      updateProductTransform();
+    }, { passive: false });
+
+    window.addEventListener('touchend', () => {
+      isProductDragging = false;
+    });
+
+
+    // UPDATE PRODUCT TRANSFORM SCALE AND ROTATION
+    function updateProductTransform() {
+      const scaleInput = scaleSlider.value;
+      const rotateInput = rotateSlider.value;
+      
+      currentScale = scaleInput / 100;
+      currentRotation = rotateInput;
+
+      scaleVal.innerText = `${scaleInput}%`;
+      rotateVal.innerText = `${rotateInput}°`;
+
+      // Apply combined transform styling
+      draggableProduct.style.transform = `translate(calc(-50% + ${productX}px), calc(-50% + ${productY}px)) scale(${currentScale}) rotate(${currentRotation}deg)`;
+    }
+
+
+    // SAMPLE SELECTOR SYSTEM
+    function setSampleProduct(emoji, title) {
+      isProductUploaded = false;
+      productVisualContent.classList.remove('hidden');
+      productUploadedImage.classList.add('hidden');
+      productVisualContent.innerHTML = emoji;
+      
+      metaInputRes.innerText = "600 x 600 px (Emoji)";
+      writeLog(`Produk sampel terpilih: ${title}`, 'text-brandText');
+      showToast(`Menggunakan produk demo: ${title}`);
+      resetAiOutputState();
+    }
+
+    // UPLOAD HANDLE SYSTEM
+    productFileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        productVisualContent.classList.add('hidden');
+        productUploadedImage.classList.remove('hidden');
+        productUploadedImage.src = event.target.result;
+        
+        isProductUploaded = true;
+        
+        // Mock dimension generation
+        const imgObj = new Image();
+        imgObj.src = event.target.result;
+        imgObj.onload = () => {
+          metaInputRes.innerText = `${imgObj.width} x ${imgObj.height} px`;
+          writeLog(`Foto produk kustom diunggah: ${file.name} (${imgObj.width}x${imgObj.height}px)`, 'text-brandText');
+          showToast(`Berhasil memuat file: ${file.name}`);
+        };
+        
+        resetAiOutputState();
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // BACKGROUND TEMPLATE PICKER SYSTEM
+    function changeWorkspaceBg(bgClass, title) {
+      // Clear previous styles
+      workspaceBg.style.backgroundImage = '';
+      workspaceBg.className = 'editor-bg-preview';
+      workspaceBg.classList.add(bgClass);
+
+      selectedBackground = bgClass;
+      selectedBackgroundName = title;
+      metaThemeName.innerText = title;
+
+      // Adjust mock ambient lighting meta based on chosen scene
+      let lightTone = "Global Warm Gold";
+      if (bgClass === 'bg-cyber-neon') lightTone = "Dynamic Cyber Synthwave";
+      if (bgClass === 'bg-tropical-oasis') lightTone = "Natural Sand Rays";
+      if (bgClass === 'bg-misty-forest') lightTone = "Cool Fog Diffusion";
+      metaLighting.innerText = lightTone;
+
+      // Highlight active button style
+      const buttons = document.querySelectorAll('#bgTemplateList button');
+      buttons.forEach(btn => {
+        btn.classList.remove('border-brandAccent');
+        btn.classList.add('border-[var(--border)]');
+      });
+      document.getElementById(`btn-${bgClass}`).classList.remove('border-[var(--border)]');
+      document.getElementById(`btn-${bgClass}`).classList.add('border-brandAccent');
+
+      writeLog(`Tema latar belakang diganti ke: ${title}`, 'text-brandMuted');
+      resetAiOutputState();
+    }
+
+    function resetAiOutputState() {
+      isAiGenerated = false;
+      canvasCompletedOverlay.style.opacity = '0';
+      btnDownload.setAttribute('disabled', 'true');
+      btnDownload.classList.remove('border-brandAccent');
+      btnDownload.classList.add('border-brandAccent/20');
+      
+      // Restore natural preview shadow
+      const visualEl = isProductUploaded ? productUploadedImage : productVisualContent;
+      if (visualEl) visualEl.style.filter = 'drop-shadow(0 15px 15px rgba(0,0,0,0.6))';
+    }
+
+
+    // SIMULATED AI GENERATION ENGINE (Supporting Preset Simulation & Real Imagen Generation)
+    async function startAiGenerationSimulation() {
+      if (studioMode === 'preset') {
+        runPresetSimulation();
+        return;
+      }
+
+      // CUSTOM PROMPT REAL GEMINI IMAGEN GENERATION
+      const promptInput = document.getElementById('customPromptInput').value.trim();
+      if (!promptInput) {
+        showToast("Masukkan prompt kustom Anda terlebih dahulu!", "info");
+        return;
+      }
+
+      writeLog(`Memulai Real-Time Visio AI Generator via Imagen 4.0...`, 'text-brandAccent');
+      writeLog(`Prompt: "${promptInput.substring(0, 60)}..."`, 'text-brandMuted');
+
+      editorContainer.classList.add('scanning');
+      btnGenerate.innerHTML = `<i class="fa-solid fa-circle-notch animate-spin"></i> Menghubungi Imagen API...`;
+      btnGenerate.setAttribute('disabled', 'true');
+
+      const apiKey = getApiKey();
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-generate-001:predict?key=${apiKey}`;
+      const payload = {
+        instances: { prompt: promptInput },
+        parameters: { sampleCount: 1 }
+      };
+
+      try {
+        writeLog(`[IMAGEN] Memulai konseptualisasi gambar latar belakang...`, 'text-sky-400');
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+        const result = await response.json();
+        const base64Data = result.predictions?.[0]?.bytesBase64Encoded;
+
+        if (base64Data) {
+          customGeneratedImageUrl = `data:image/png;base64,${base64Data}`;
+          
+          // Apply custom background image dynamically to workspace preview
+          workspaceBg.className = 'editor-bg-preview';
+          workspaceBg.style.backgroundImage = `url('${customGeneratedImageUrl}')`;
+
+          // Add a spectacular visual blend adjustment
+          const visualEl = isProductUploaded ? productUploadedImage : productVisualContent;
+          if (visualEl) {
+            visualEl.style.filter = 'drop-shadow(0 20px 20px rgba(0,0,0,0.65)) brightness(1.05) saturate(1.1)';
+          }
+
+          editorContainer.classList.remove('scanning');
+          canvasCompletedOverlay.style.opacity = '1';
+          isAiGenerated = true;
+
+          // Enable download
+          btnDownload.removeAttribute('disabled');
+          btnDownload.classList.remove('border-brandAccent/20');
+          btnDownload.classList.add('border-brandAccent');
+
+          writeLog(`[SUCCESS] Latar belakang kustom berhasil di-render oleh Imagen 4!`, 'text-emerald-400');
+          showToast("Rendition AI Kustom Selesai!");
+        } else {
+          throw new Error("No image data found in prediction response.");
+        }
+      } catch (err) {
+        console.error(err);
+        writeLog(`[ERROR] Gagal memuat API Imagen. Menggunakan fallback render kustom...`, 'text-brandAccentDark');
+        showToast("Gagal terhubung ke API Gambar. Menjalankan fallback simulasi kreatif.", "info");
+        
+        // Simulating gorgeous fallback
+        setTimeout(() => {
+          workspaceBg.className = 'editor-bg-preview bg-studio-light';
+          const visualEl = isProductUploaded ? productUploadedImage : productVisualContent;
+          if (visualEl) {
+            visualEl.style.filter = 'drop-shadow(0 20px 20px rgba(0,0,0,0.7)) brightness(1.1)';
+          }
+          editorContainer.classList.remove('scanning');
+          canvasCompletedOverlay.style.opacity = '1';
+          isAiGenerated = true;
+          btnDownload.removeAttribute('disabled');
+          btnDownload.classList.remove('border-brandAccent/20');
+          btnDownload.classList.add('border-brandAccent');
+          writeLog(`[SUCCESS] Fallback render selesai menggunakan Preset Studio Light.`, 'text-emerald-400');
+        }, 2000);
+      } finally {
+        btnGenerate.innerHTML = `<i class="fa-solid fa-bolt"></i> Generate Premium Background`;
+        btnGenerate.removeAttribute('disabled');
+      }
+    }
+
+    // Classic local visual simulator pipeline
+    function runPresetSimulation() {
+      writeLog(`Memulai Visio AI Renderer...`, 'text-brandAccent');
+      writeLog(`Template terpilih: ${selectedBackgroundName}`, 'text-brandMuted');
+      
+      editorContainer.classList.add('scanning');
+      btnGenerate.innerHTML = `<i class="fa-solid fa-circle-notch animate-spin"></i> Memproses Rendering AI...`;
+      btnGenerate.setAttribute('disabled', 'true');
+
+      // AI pipeline logs sequence simulation
+      setTimeout(() => {
+        writeLog(`[AI ENGINE] Mendeteksi tepi & dimensi produk...`, 'text-sky-400');
+      }, 800);
+
+      setTimeout(() => {
+        writeLog(`[AI ENGINE] Menghapus sisa latar belakang asli...`, 'text-sky-400');
+      }, 1600);
+
+      setTimeout(() => {
+        writeLog(`[AI ENGINE] Menyinkronkan ambient light ke ${metaLighting.innerText}...`, 'text-amber-400');
+        
+        // Real-time visual change on the workspace product to blend with selected scene
+        const visualEl = isProductUploaded ? productUploadedImage : productVisualContent;
+        if (selectedBackground === 'bg-luxury-marble') {
+          visualEl.style.filter = 'drop-shadow(0 25px 25px rgba(232,201,122,0.45)) saturate(1.1)';
+        } else if (selectedBackground === 'bg-cyber-neon') {
+          visualEl.style.filter = 'drop-shadow(0 0 25px rgba(244,63,94,0.7)) brightness(1.2)';
+        } else if (selectedBackground === 'bg-tropical-oasis') {
+          visualEl.style.filter = 'drop-shadow(0 30px 20px rgba(12,74,110,0.5)) saturate(1.2)';
+        } else {
+          visualEl.style.filter = 'drop-shadow(0 20px 20px rgba(0,0,0,0.7)) brightness(1.05)';
+        }
+      }, 2500);
+
+      setTimeout(() => {
+        writeLog(`[AI ENGINE] Melakukan peningkatan resolusi visual ke Ultra HD 4K...`, 'text-sky-400');
+      }, 3300);
+
+      setTimeout(() => {
+        // Complete generation simulation
+        editorContainer.classList.remove('scanning');
+        btnGenerate.innerHTML = `<i class="fa-solid fa-bolt"></i> Generate Premium Background`;
+        btnGenerate.removeAttribute('disabled');
+        
+        canvasCompletedOverlay.style.opacity = '1';
+        isAiGenerated = true;
+
+        // Unlock download button
+        btnDownload.removeAttribute('disabled');
+        btnDownload.classList.remove('border-brandAccent/20');
+        btnDownload.classList.add('border-brandAccent');
+
+        writeLog(`[SUCCESS] AI Image Render Berhasil Diselesaikan!`, 'text-emerald-400');
+        showToast("Rendition Visual Selesai dengan Sempurna!");
+      }, 4200);
+    }
+
+    // Create professional Ad Copy and Product descriptions with Gemini 3.1
+    async function generateCopywritingWithGemini() {
+      const tone = document.getElementById('copywritingTone').value;
+      const resultContainer = document.getElementById('copywritingResultContainer');
+      const resultTextArea = document.getElementById('copywritingResultText');
+      const btn = document.getElementById('btnGenerateCopy');
+
+      // Determine product type
+      let productType = "Produk Premium";
+      if (isProductUploaded) {
+        productType = "Produk Kustom Unggahan User";
+      } else {
+        const activeEmoji = productVisualContent.innerText;
+        if (activeEmoji.includes('🧪')) productType = "Botol Serum Kecantikan / Skincare";
+        if (activeEmoji.includes('👜') || activeEmoji.includes('💼')) productType = "Tas Ransel / Handbag Kulit Premium";
+        if (activeEmoji.includes('👟')) productType = "Sepatu Sneakers Gaya Urban";
+        if (activeEmoji.includes('☕')) productType = "Mug Kopi Keramik Premium";
+      }
+
+      // Determine scene description
+      let sceneDesc = selectedBackgroundName;
+      if (studioMode === 'custom') {
+        sceneDesc = document.getElementById('customPromptInput').value.trim() || "Kustom Latar Studio";
+      }
+
+      writeLog(`Menginisiasi pembuatan naskah copywriting premium dengan gaya: ${tone}...`, 'text-brandAccent');
+      const originalBtnText = btn.innerHTML;
+      btn.innerHTML = `<i class="fa-solid fa-circle-notch animate-spin"></i> Menyusun Kata-kata...`;
+      btn.setAttribute('disabled', 'true');
+
+      const apiKey = getApiKey();
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+      const systemPrompt = `You are an elite, high-converting digital marketing copywriter specializing in luxury and retail e-commerce. Create an outstanding, highly viral caption for an Indonesian audience. Keep it highly tailored to the selected tone. Format with clear spacing, bold headings (optional), relevant emojis, and 3-4 impactful hashtags. Respond with ONLY the finalized social media post caption, direct and fully prepared for copy-pasting. Tone specification: ${tone}`;
+      
+      const userPrompt = `Generate a compelling Instagram caption for:
+Product: ${productType}
+Scene Presentation: Represented beautifully against a high-end background of "${sceneDesc}"
+Tone Style: ${tone}
+Goal: Evoke premium quality, desire, luxury feel, and clear CTA to buy.`;
+
+      const payload = {
+        contents: [{ parts: [{ text: userPrompt }] }],
+        systemInstruction: { parts: [{ text: systemPrompt }] }
+      };
+
+      try {
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+        const data = await response.json();
+        const generatedText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+
+        if (generatedText) {
+          resultTextArea.value = generatedText.trim();
+          resultContainer.classList.remove('hidden');
+          showToast("Copywriting iklan berhasil dibuat!");
+          writeLog(`[GEMINI SUCCESS] Salinan iklan siap disalin!`, 'text-emerald-400');
+        } else {
+          throw new Error("Empty copywriter response.");
+        }
+      } catch (err) {
+        console.error(err);
+        showToast("Gagal membuat salinan via Gemini. Menggunakan draf lokal.", "info");
+        
+        // Dynamic mock backup text in Indonesian
+        const localBackup = `✨ Tampil Eksklusif Setiap Hari ✨\n\nMiliki ${productType} yang dirancang khusus untuk Anda yang menghargai keindahan & kenyamanan tingkat tinggi. Dipadukan dengan estetika berkelas "${sceneDesc}", setiap sentuhan memancarkan kemewahan sejati.\n\n💼 Dapatkan milikmu sekarang juga! Stok sangat terbatas.\n👉 Hubungi kami hari ini untuk pemesanan instan.\n\n#${tone.replace(/\s+/g, '')} #GayaPremium #Eksklusif #ProdukLokal`;
+        resultTextArea.value = localBackup;
+        resultContainer.classList.remove('hidden');
+        writeLog(`[FALLBACK] Menggunakan draf copywriting otomatis lokal.`, 'text-brandMuted');
+      } finally {
+        btn.innerHTML = originalBtnText;
+        btn.removeAttribute('disabled');
+      }
+    }
+
+    // Helper to safely copy to clipboard in restricted iframe sandboxes using execCommand
+    function copyToClipboard(elementId) {
+      const copyText = document.getElementById(elementId);
+      copyText.select();
+      copyText.setSelectionRange(0, 99999); // Compatibility for mobile devices
+      
+      try {
+        document.execCommand('copy');
+        showToast("Copywriting disalin ke clipboard!");
+      } catch (err) {
+        showToast("Gagal menyalin otomatis. Silakan salin manual.", "info");
+      }
+    }
+
+    // DOWNLOAD CLIENT WORKSPACE PREVIEW
+    function downloadAsImage() {
+      if (!isAiGenerated) {
+        showToast("Lakukan Generate terlebih dahulu!", "info");
+        return;
+      }
+      
+      writeLog(`Mempersiapkan pengemasan file ekspor premium...`, 'text-brandMuted');
+      showToast("Download dimulai! Menyimpan file kualitas ultra HD...", "info");
+
+      // Interactive download utilizing generated output
+      setTimeout(() => {
+        const link = document.createElement('a');
+        link.download = `Visio_AI_Product_${studioMode === 'custom' ? 'Custom' : selectedBackgroundName}.png`;
+        link.href = (studioMode === 'custom' && customGeneratedImageUrl) ? customGeneratedImageUrl : 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&q=80&w=800'; 
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        showToast("File Berhasil Diunduh!", "success");
+        writeLog(`Selesai mengunduh hasil final.`, 'text-emerald-400');
+      }, 1000);
+    }
+
+    // RESET WORKSPACE
+    function resetWorkspace() {
+      productX = 0;
+      productY = 0;
+      scaleSlider.value = 100;
+      rotateSlider.value = 0;
+      updateProductTransform();
+      resetAiOutputState();
+      
+      customGeneratedImageUrl = '';
+      if (studioMode === 'custom') {
+        document.getElementById('customPromptInput').value = '';
+        workspaceBg.style.backgroundImage = 'none';
+        workspaceBg.className = 'editor-bg-preview bg-brandBg';
+      } else {
+        changeWorkspaceBg('bg-luxury-marble', 'Eksklusif Marmer');
+      }
+
+      // Hide copywriting box
+      document.getElementById('copywritingResultContainer').classList.add('hidden');
+      
+      writeLog(`Sesi studio telah dibersihkan kembali ke pengaturan awal.`, 'text-brandMuted');
+      showToast("Workspace berhasil dibersihkan.");
+    }
+
+
+    // REVEAL ANIMATION ON SCROLL
+    function reveal() {
+      const reveals = document.querySelectorAll('.reveal');
+      for (let i = 0; i < reveals.length; i++) {
+        const windowHeight = window.innerHeight;
+        const elementTop = reveals[i].getBoundingClientRect().top;
+        const elementVisible = 120;
+        if (elementTop < windowHeight - elementVisible) {
+          reveals[i].classList.add('visible');
+        }
+      }
+    }
+
+    window.addEventListener('scroll', reveal);
+    window.onload = function() {
+      reveal();
+      writeLog(`Sistem siap. Selamat datang di Visio AI Workspace!`);
+    }
+  </script>
+</body>
+</html>
